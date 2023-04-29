@@ -28,6 +28,7 @@ from os import path
 
 from qubesadmin import exc
 from qubesadmin import utils
+from qubesadmin.tools import qvm_start
 
 # pylint: disable=import-error
 from PyQt5.QtCore import (Qt, QAbstractTableModel, QObject, pyqtSlot, QEvent,
@@ -1393,7 +1394,9 @@ class VmManagerWindow(ui_qubemanager.Ui_VmManagerWindow, QMainWindow):
     # TODO: replace with boot from device
     def action_startvm_tools_install_triggered(self):
         # pylint: disable=invalid-name
-        pass
+        if manager_utils.is_running(vm, False):
+            qvm_start.main(
+                    ['--cdrom', 'dom0:/usr/lib/qubes/qubes-windows-tools.iso', self.vm.name])
 
     @pyqtSlot(name='on_action_pausevm_triggered')
     def action_pausevm_triggered(self):
